@@ -1,12 +1,25 @@
 package com.example.libraryapp_backend.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.libraryapp_backend.dao.Booksdao;
+import com.example.libraryapp_backend.dao.Issuedao;
+import com.example.libraryapp_backend.model.BooksModel;
+import com.example.libraryapp_backend.model.IssueModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 
 public class LibraryController {
+
+    @Autowired
+    private Booksdao dao;
+
+    @Autowired
+    private Issuedao idao;
 
     @PostMapping("/")
     public String Admin(){
@@ -24,28 +37,50 @@ public class LibraryController {
 
 
 
-    @PostMapping(path="/entry")
-    public String Books_entry(){
-        return "Welcome to books entry page";
+    @CrossOrigin(origins = "*")
+    @PostMapping(path="/entry",consumes = "application/json",produces = "application/json")
+    public Map<String,String> Books_entry(@RequestBody BooksModel b){
+        dao.save(b);
+        HashMap<String,String> map=new HashMap<>();
+        map.put("status","success");
+        return map;
     }
+
+    @CrossOrigin(origins = "*")
     @GetMapping("/view")
-    public String Books_view(){
-        return "Welcome to books view page";
+    public List<BooksModel> Books_view()
+    {
+        return (List<BooksModel>) dao.findAll();
     }
-    @PostMapping("/search")
-    public String Books_search(){
-        return "Welcome to books search page";
+
+
+    @CrossOrigin(origins = "*")
+    @PostMapping(path="/search",consumes = "application/json",produces = "application/json")
+    public List<BooksModel> Books_search(@RequestBody BooksModel b){
+        return (List<BooksModel>) dao.SearchBooks(b.getName());
     }
-    @PostMapping("/delete")
-    public String Books_delete(){
-        return "Welcome to books delete page";
+
+
+    @PostMapping(path="/delete",consumes = "application/json",produces = "application/json")
+    public HashMap<String,String> Books_delete(@RequestBody BooksModel b){
+        dao.DeleteBook(b.getId());
+        HashMap<String,String> map=new HashMap<>();
+        map.put("status","success");
+        return map;
     }
+
+
     @PostMapping("/edit")
     public String Books_edit(){
         return "Welcome to books edit page";
     }
-    @PostMapping("/issue")
-    public String Issue_books(){
-        return "Welcome to issue books page";
+
+
+    @PostMapping(path="/issue",consumes = "application/json",produces = "application/json")
+    public Map<String,String> Issue_books(@RequestBody IssueModel b){
+        idao.save(b);
+        HashMap<String,String> map=new HashMap<>();
+        map.put("status","success");
+        return map;
     }
 }
