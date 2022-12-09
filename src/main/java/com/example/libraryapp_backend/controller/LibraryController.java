@@ -2,8 +2,10 @@ package com.example.libraryapp_backend.controller;
 
 import com.example.libraryapp_backend.dao.Booksdao;
 import com.example.libraryapp_backend.dao.Issuedao;
+import com.example.libraryapp_backend.dao.Userdao;
 import com.example.libraryapp_backend.model.BooksModel;
 import com.example.libraryapp_backend.model.IssueModel;
+import com.example.libraryapp_backend.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +22,9 @@ public class LibraryController {
 
     @Autowired
     private Issuedao idao;
+
+    @Autowired
+    private Userdao udao;
 
     @PostMapping("/")
     public String Admin(){
@@ -71,6 +76,8 @@ public class LibraryController {
     }
 
 
+
+
     @PostMapping("/edit")
     public String Books_edit(){
         return "Welcome to books edit page";
@@ -85,4 +92,26 @@ public class LibraryController {
         map.put("status","success");
         return map;
     }
+
+
+
+    @CrossOrigin(origins = "*")
+    @PostMapping(path="/reg",consumes = "application/json",produces = "application/json")
+    public Map<String,String> User_entry(@RequestBody UserModel u){
+        udao.save(u);
+        HashMap<String,String> map=new HashMap<>();
+        map.put("status","success");
+        return map;
+    }
+
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/uview")
+    public List<UserModel> User_view()
+    {
+        return (List<UserModel>) udao.findAll();
+    }
+
+
+
 }
