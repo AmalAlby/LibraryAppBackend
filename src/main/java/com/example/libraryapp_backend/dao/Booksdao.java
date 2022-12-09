@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface Booksdao extends CrudRepository<BooksModel,Integer> {
 
-    @Query(value = "SELECT `id`, `author`, `description`, `distributor`, `image`, `language`, `name`, `price`, `publisher`, `year` FROM `bookslist` WHERE `name` =:name",nativeQuery = true)
+    @Query(value = "SELECT `id`, `author`, `description`, `distributor`, `image`, `language`, `name`, `price`, `publisher`, `year` FROM `bookslist` WHERE `name` LIKE %:name%",nativeQuery = true)
     List<BooksModel> SearchBooks(@Param("name") String name);
 
     @Modifying

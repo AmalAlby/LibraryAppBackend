@@ -61,6 +61,7 @@ public class LibraryController {
     }
 
 
+    @CrossOrigin(origins = "*")
     @PostMapping(path="/delete",consumes = "application/json",produces = "application/json")
     public HashMap<String,String> Books_delete(@RequestBody BooksModel b){
         dao.DeleteBook(b.getId());
@@ -76,6 +77,7 @@ public class LibraryController {
     }
 
 
+    @CrossOrigin(origins = "*")
     @PostMapping(path="/issue",consumes = "application/json",produces = "application/json")
     public Map<String,String> Issue_books(@RequestBody IssueModel b){
         idao.save(b);
